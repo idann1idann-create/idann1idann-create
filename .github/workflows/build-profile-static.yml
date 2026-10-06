@@ -63,9 +63,15 @@ jobs:
 
       - name: Sync generated files with the latest main branch
         run: |
-          git stash push --include-untracked -m "profile art build outputs"
+          stashed=false
+          if [ -n "$(git status --porcelain)" ]; then
+            git stash push --include-untracked -m "profile art build outputs"
+            stashed=true
+          fi
           git pull --rebase origin main
-          git stash pop
+          if [ "$stashed" = true ]; then
+            git stash pop
+          fi
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
