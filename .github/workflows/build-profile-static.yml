@@ -1,0 +1,31 @@
+name: Build profile static art
+
+"on":
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install -r scripts/requirements.txt
+
+      - run: python scripts/prep_photo.py source-photo.jpg
+
+      - run: python scripts/make_ascii_svg.py
+
+      - run: python scripts/make_info_card.py
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: build profile static art [skip ci]"
+          file_pattern: "source-prepped.png avi-ascii.svg info-card.svg"
