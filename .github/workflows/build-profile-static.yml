@@ -16,6 +16,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Sync with the latest main branch
+        run: |
+          git fetch origin main
+          git rebase origin/main
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
