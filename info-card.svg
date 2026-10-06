@@ -1,0 +1,210 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    width="490"
+    height="310"
+    viewBox="0 0 490 310">
+
+    <rect
+        x="1"
+        y="1"
+        width="488"
+        height="308"
+        rx="14"
+        fill="#0d1117"
+        stroke="#30363d"
+        stroke-width="2"/>
+    
+
+    <text
+        x="28"
+        y="42"
+        font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+        font-size="18"
+        font-weight="700"
+        fill="#c9d1d9">
+        idan@github
+    </text>
+
+    <text
+        x="28"
+        y="68"
+        font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+        font-size="13"
+        fill="#8b949e">
+        ------------------------------
+    </text>
+    
+
+        <g opacity="0" >
+            
+        <animate
+            attributeName="opacity"
+            from="0"
+            to="1"
+            dur="0.35s"
+            begin="0.0s"
+            fill="freeze"/>
+
+        <animateTransform
+            attributeName="transform"
+            type="translate"
+            from="0 8"
+            to="0 0"
+            dur="0.35s"
+            begin="0.0s"
+            fill="freeze"/>
+        
+
+            <text
+                x="28"
+                y="105"
+                font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+                font-size="14"
+                font-weight="700"
+                fill="#39d353">
+                Now
+            </text>
+
+            <text
+                x="145"
+                y="105"
+                font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+                font-size="14"
+                fill="#c9d1d9">
+                Building Osto / Atlas
+            </text>
+        </g>
+        
+
+        <g opacity="0" >
+            
+        <animate
+            attributeName="opacity"
+            from="0"
+            to="1"
+            dur="0.35s"
+            begin="0.18s"
+            fill="freeze"/>
+
+        <animateTransform
+            attributeName="transform"
+            type="translate"
+            from="0 8"
+            to="0 0"
+            dur="0.35s"
+            begin="0.18s"
+            fill="freeze"/>
+        
+
+            <text
+                x="28"
+                y="147"
+                font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+                font-size="14"
+                font-weight="700"
+                fill="#58a6ff">
+                Prev
+            </text>
+
+            <text
+                x="145"
+                y="147"
+                font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+                font-size="14"
+                fill="#c9d1d9">
+                Financial Planner
+            </text>
+        </g>
+        
+
+        <g opacity="0" >
+            
+        <animate
+            attributeName="opacity"
+            from="0"
+            to="1"
+            dur="0.35s"
+            begin="0.36s"
+            fill="freeze"/>
+
+        <animateTransform
+            attributeName="transform"
+            type="translate"
+            from="0 8"
+            to="0 0"
+            dur="0.35s"
+            begin="0.36s"
+            fill="freeze"/>
+        
+
+            <text
+                x="28"
+                y="189"
+                font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+                font-size="14"
+                font-weight="700"
+                fill="#bc8cff">
+                Stack
+            </text>
+
+            <text
+                x="145"
+                y="189"
+                font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+                font-size="14"
+                fill="#c9d1d9">
+                Python · React · AI
+            </text>
+        </g>
+        
+
+        <g opacity="0" >
+            
+        <animate
+            attributeName="opacity"
+            from="0"
+            to="1"
+            dur="0.35s"
+            begin="0.54s"
+            fill="freeze"/>
+
+        <animateTransform
+            attributeName="transform"
+            type="translate"
+            from="0 8"
+            to="0 0"
+            dur="0.35s"
+            begin="0.54s"
+            fill="freeze"/>
+        
+
+            <text
+                x="28"
+                y="231"
+                font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+                font-size="14"
+                font-weight="700"
+                fill="#d29922">
+                Highlights
+            </text>
+
+            <text
+                x="145"
+                y="231"
+                font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+                font-size="14"
+                fill="#c9d1d9">
+                Finance · Automation · Agents
+            </text>
+        </g>
+        
+
+    <text
+        x="28"
+        y="285"
+        font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+        font-size="12"
+        fill="#8b949e">
+        github.com/idann1idann-create
+    </text>
+    
+</svg>
