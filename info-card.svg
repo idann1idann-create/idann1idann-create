@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg"
-    width="490"
-    height="310"
-    viewBox="0 0 490 310">
+    width="430"
+    height="370"
+    viewBox="0 0 430 370">
 
     <rect
         x="1"
         y="1"
-        width="488"
-        height="308"
+        width="428"
+        height="368"
         rx="14"
         fill="#0d1117"
         stroke="#30363d"
@@ -15,8 +15,8 @@
     
 
     <text
-        x="28"
-        y="42"
+        x="26"
+        y="46"
         font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
         font-size="18"
         font-weight="700"
@@ -25,8 +25,8 @@
     </text>
 
     <text
-        x="28"
-        y="68"
+        x="26"
+        y="74"
         font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
         font-size="13"
         fill="#8b949e">
@@ -55,8 +55,8 @@
         
 
             <text
-                x="28"
-                y="105"
+                x="26"
+                y="120"
                 font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
                 font-size="14"
                 font-weight="700"
@@ -65,8 +65,8 @@
             </text>
 
             <text
-                x="145"
-                y="105"
+                x="130"
+                y="120"
                 font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
                 font-size="14"
                 fill="#c9d1d9">
@@ -82,7 +82,7 @@
             from="0"
             to="1"
             dur="0.35s"
-            begin="0.18s"
+            begin="0.14s"
             fill="freeze"/>
 
         <animateTransform
@@ -91,13 +91,13 @@
             from="0 8"
             to="0 0"
             dur="0.35s"
-            begin="0.18s"
+            begin="0.14s"
             fill="freeze"/>
         
 
             <text
-                x="28"
-                y="147"
+                x="26"
+                y="166"
                 font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
                 font-size="14"
                 font-weight="700"
@@ -106,8 +106,8 @@
             </text>
 
             <text
-                x="145"
-                y="147"
+                x="130"
+                y="166"
                 font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
                 font-size="14"
                 fill="#c9d1d9">
@@ -123,7 +123,7 @@
             from="0"
             to="1"
             dur="0.35s"
-            begin="0.36s"
+            begin="0.28s"
             fill="freeze"/>
 
         <animateTransform
@@ -132,13 +132,13 @@
             from="0 8"
             to="0 0"
             dur="0.35s"
-            begin="0.36s"
+            begin="0.28s"
             fill="freeze"/>
         
 
             <text
-                x="28"
-                y="189"
+                x="26"
+                y="212"
                 font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
                 font-size="14"
                 font-weight="700"
@@ -147,8 +147,8 @@
             </text>
 
             <text
-                x="145"
-                y="189"
+                x="130"
+                y="212"
                 font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
                 font-size="14"
                 fill="#c9d1d9">
@@ -164,7 +164,7 @@
             from="0"
             to="1"
             dur="0.35s"
-            begin="0.54s"
+            begin="0.42000000000000004s"
             fill="freeze"/>
 
         <animateTransform
@@ -173,13 +173,13 @@
             from="0 8"
             to="0 0"
             dur="0.35s"
-            begin="0.54s"
+            begin="0.42000000000000004s"
             fill="freeze"/>
         
 
             <text
-                x="28"
-                y="231"
+                x="26"
+                y="258"
                 font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
                 font-size="14"
                 font-weight="700"
@@ -188,8 +188,8 @@
             </text>
 
             <text
-                x="145"
-                y="231"
+                x="130"
+                y="258"
                 font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
                 font-size="14"
                 fill="#c9d1d9">
@@ -199,8 +199,8 @@
         
 
     <text
-        x="28"
-        y="285"
+        x="26"
+        y="338"
         font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
         font-size="12"
         fill="#8b949e">
