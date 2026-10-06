@@ -2,6 +2,9 @@ name: Build profile static art
 
 "on":
   workflow_dispatch: {}
+  push:
+    paths:
+      - .github/workflows/build-profile-static.yml
 
 permissions:
   contents: write
@@ -18,6 +21,25 @@ jobs:
           python-version: "3.11"
 
       - run: pip install -r scripts/requirements.txt
+      - run: pip install pillow-heif
+
+      - name: Convert source photo to JPEG
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          from pillow_heif import register_heif_opener
+
+          register_heif_opener()
+          source = Path("source-photo.jpg")
+          converted = source.with_name(".source-photo-converted.jpg")
+          with Image.open(source) as image:
+              image.convert("RGB").save(converted, format="JPEG", quality=95)
+          converted.replace(source)
+          with Image.open(source) as image:
+              image.verify()
+          print("Converted source-photo.jpg to a valid JPEG")
+          PY
 
       - run: python scripts/prep_photo.py source-photo.jpg
 
@@ -28,4 +50,4 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: build profile static art [skip ci]"
-          file_pattern: "source-prepped.png avi-ascii.svg info-card.svg"
+          file_pattern: "source-photo.jpg source-prepped.png avi-ascii.svg info-card.svg"
