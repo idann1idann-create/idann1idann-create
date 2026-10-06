@@ -16,11 +16,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Sync with the latest main branch
-        run: |
-          git fetch origin main
-          git rebase origin/main
-
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
@@ -51,6 +46,12 @@ jobs:
       - run: python scripts/make_ascii_svg.py
 
       - run: python scripts/make_info_card.py
+
+      - name: Sync generated files with the latest main branch
+        run: |
+          git stash push --include-untracked -m "profile art build outputs"
+          git pull --rebase origin main
+          git stash pop
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
