@@ -1,5 +1,6 @@
 import json
-from datetime import datetime, timedelta
+import re
+from datetime import datetime
 from pathlib import Path
 
 import requests
@@ -10,16 +11,17 @@ USERNAME = "idann1idann-create"
 OUTPUT = Path("data/contributions.json")
 
 
-def parse_count(text: str) -> int:
+def extract_count(text: str) -> int:
     if not text:
         return 0
 
-    text = text.replace(",", "").strip()
+    if text.lower().startswith("no contributions"):
+        return 0
 
-    parts = text.split()
-    for part in parts:
-        if part.isdigit():
-            return int(part)
+    match = re.search(r"([\d,]+)\s+contribution", text, re.IGNORECASE)
+
+    if match:
+        return int(match.group(1).replace(",", ""))
 
     return 0
 
@@ -38,7 +40,7 @@ def main():
 
     days = []
 
-    for cell in soup.select("td.ContributionCalendar-day"):
+    for cell in soup.select(".ContributionCalendar-day"):
         date = cell.get("data-date")
 
         if not date:
@@ -46,9 +48,24 @@ def main():
 
         count = 0
 
-        aria = cell.get("aria-label", "")
-        if aria:
-            count = parse_count(aria)
+        cell_id = cell.get("id")
+
+        # GitHub now stores the readable contribution count
+        # in a tooltip associated with the calendar cell.
+        if cell_id:
+            tooltip = soup.find("tool-tip", attrs={"for": cell_id})
+
+            if tooltip:
+                count = extract_count(
+                    tooltip.get_text(" ", strip=True)
+                )
+
+        # Fallback for older GitHub markup
+        if count == 0:
+            aria = cell.get("aria-label", "")
+
+            if aria:
+                count = extract_count(aria)
 
         days.append({
             "date": date,
@@ -57,14 +74,12 @@ def main():
 
     if not days:
         raise RuntimeError(
-            "No contribution cells found. GitHub may have changed the HTML structure."
+            "No contribution cells found. GitHub may have changed its HTML."
         )
 
     days.sort(key=lambda x: x["date"])
 
-    counts = [d["count"] for d in days]
-
-    total = sum(counts)
+    total = sum(day["count"] for day in days)
 
     best_day = max(
         days,
@@ -72,29 +87,28 @@ def main():
     )
 
     longest_streak = 0
-    current_run = 0
+    run = 0
 
-    for d in days:
-        if d["count"] > 0:
-            current_run += 1
-            longest_streak = max(longest_streak, current_run)
+    for day in days:
+        if day["count"] > 0:
+            run += 1
+            longest_streak = max(longest_streak, run)
         else:
-            current_run = 0
+            run = 0
 
     current_streak = 0
 
-    for d in reversed(days):
-        if d["count"] > 0:
+    for day in reversed(days):
+        if day["count"] > 0:
             current_streak += 1
         else:
             break
 
     monthly = {}
 
-    for d in days:
-        month = d["date"][:7]
-        monthly.setdefault(month, 0)
-        monthly[month] += d["count"]
+    for day in days:
+        month = day["date"][:7]
+        monthly[month] = monthly.get(month, 0) + day["count"]
 
     data = {
         "username": USERNAME,
@@ -104,7 +118,7 @@ def main():
         "longest_streak": longest_streak,
         "best_day": best_day,
         "monthly_totals": monthly,
-        "days": days,
+        "days": days
     }
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
@@ -115,7 +129,7 @@ def main():
     )
 
     print(f"Saved contribution data to {OUTPUT}")
-    print(f"Total contributions: {total}")
+    print(f"Total public contributions: {total}")
     print(f"Current streak: {current_streak}")
     print(f"Longest streak: {longest_streak}")
     print(f"Best day: {best_day}")
