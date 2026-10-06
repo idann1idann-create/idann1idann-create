@@ -4,19 +4,13 @@
 
 <img src="./contrib-heatmap.svg" width="860" alt="Public GitHub contribution activity, refreshed daily." />
 
-<br><br>
+<br />
 
 <h3><code>idan@github ~ $ whoami</code></h3>
 
-<table>
-  <tr>
-    <td valign="top">
-      <img src="./avi-ascii.svg" width="370" alt="Animated ASCII portrait." />
-    </td>
-    <td valign="top">
-      <img src="./info-card.svg" width="490" alt="Profile card with current work, previous project, technology stack, and areas of interest." />
-    </td>
-  </tr>
-</table>
+<p align="center">
+  <img src="./avi-ascii.svg" width="49%" alt="Animated ASCII portrait." />
+  <img src="./info-card.svg" width="49%" alt="Profile card with current work, previous project, technology stack, and areas of interest." />
+</p>
 
 </div>

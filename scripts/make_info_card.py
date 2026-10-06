@@ -3,8 +3,8 @@ from pathlib import Path
 
 OUTPUT = Path("info-card.svg")
 
-WIDTH = 490
-HEIGHT = 310
+WIDTH = 430
+HEIGHT = 370
 
 BG = "#0d1117"
 BORDER = "#30363d"
@@ -59,8 +59,8 @@ svg.append(
 svg.append(
     f'''
     <text
-        x="28"
-        y="42"
+        x="26"
+        y="46"
         font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
         font-size="18"
         font-weight="700"
@@ -69,8 +69,8 @@ svg.append(
     </text>
 
     <text
-        x="28"
-        y="68"
+        x="26"
+        y="74"
         font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
         font-size="13"
         fill="{MUTED}">
@@ -79,8 +79,8 @@ svg.append(
     '''
 )
 
-start_y = 105
-gap = 42
+start_y = 120
+gap = 46
 
 for i, (key, value, color) in enumerate(rows):
     y = start_y + i * gap
@@ -90,7 +90,7 @@ for i, (key, value, color) in enumerate(rows):
         opacity = "1"
         transform = ""
     else:
-        delay = 0.18 * i
+        delay = 0.14 * i
 
         animation = f'''
         <animate
@@ -120,7 +120,7 @@ for i, (key, value, color) in enumerate(rows):
             {animation}
 
             <text
-                x="28"
+                x="26"
                 y="{y}"
                 font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
                 font-size="14"
@@ -130,7 +130,7 @@ for i, (key, value, color) in enumerate(rows):
             </text>
 
             <text
-                x="145"
+                x="130"
                 y="{y}"
                 font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
                 font-size="14"
@@ -144,8 +144,8 @@ for i, (key, value, color) in enumerate(rows):
 svg.append(
     f'''
     <text
-        x="28"
-        y="285"
+        x="26"
+        y="338"
         font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
         font-size="12"
         fill="{MUTED}">

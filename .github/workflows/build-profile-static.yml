@@ -71,4 +71,4 @@ jobs:
         with:
           commit_message: "chore: build profile static art [skip ci]"
           commit_author: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
-          file_pattern: "source-photo.jpg source-prepped.png avi-ascii.svg info-card.svg"
+          file_pattern: "source-photo.jpg avi-ascii.svg info-card.svg"

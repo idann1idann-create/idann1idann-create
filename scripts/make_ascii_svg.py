@@ -1,17 +1,17 @@
 from pathlib import Path
-from PIL import Image
+from PIL import Image, ImageChops
 
 INPUT = Path("source-prepped.png")
 OUTPUT = Path("avi-ascii.svg")
 
-COLS = 100
+COLS = 104
 RAMP = " .`:-=+*cs#%@"
 
 CHAR_W = 7.2
 CHAR_H = 11.5
 FONT_SIZE = 11
-LEFT_PAD = 8
-TOP_PAD = 14
+LEFT_PAD = 10
+TOP_PAD = 10
 
 
 def pixel_to_char(value: int) -> str:
@@ -40,6 +40,23 @@ def main():
         )
 
     img = Image.open(INPUT).convert("L")
+
+    # Remove the large white margins left by the source photo before
+    # sampling it. Keep a little headroom so the portrait does not touch
+    # the panel edges.
+    bounds = ImageChops.difference(
+        img,
+        Image.new("L", img.size, 255),
+    ).point(lambda value: 255 if value > 5 else 0).getbbox()
+    if bounds:
+        content_height = bounds[3] - bounds[1]
+        top_padding = max(12, round(content_height * 0.025))
+        img = img.crop((
+            bounds[0],
+            max(0, bounds[1] - top_padding),
+            bounds[2],
+            bounds[3],
+        ))
 
     # Terminal characters are taller than they are wide,
     # so compensate for that when resizing.
