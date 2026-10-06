@@ -1,12 +1,13 @@
 {
   "username": "idann1idann-create",
-  "generated_at": "2026-10-06T10:59:28.120445Z",
-  "total_contributions": 30,
+  "generated_at": "2026-10-06T13:24:13Z",
+  "count_scope": "public profile contributions",
+  "total_contributions": 34,
   "current_streak": 1,
   "longest_streak": 1,
   "best_day": {
     "date": "2026-10-06",
-    "count": 29
+    "count": 33
   },
   "monthly_totals": {
     "2025-10": 0,
@@ -21,7 +22,7 @@
     "2026-07": 0,
     "2026-08": 1,
     "2026-09": 0,
-    "2026-10": 29
+    "2026-10": 33
   },
   "days": [
     {
@@ -1490,7 +1491,7 @@
     },
     {
       "date": "2026-10-06",
-      "count": 29
+      "count": 33
     }
   ]
 }
