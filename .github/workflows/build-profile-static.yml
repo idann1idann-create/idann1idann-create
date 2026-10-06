@@ -5,9 +5,18 @@ name: Build profile static art
   push:
     paths:
       - .github/workflows/build-profile-static.yml
+      - source-photo.jpg
+      - scripts/prep_photo.py
+      - scripts/make_ascii_svg.py
+      - scripts/make_info_card.py
+      - scripts/requirements.txt
 
 permissions:
   contents: write
+
+concurrency:
+  group: profile-art-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -33,12 +42,17 @@ jobs:
           register_heif_opener()
           source = Path("source-photo.jpg")
           converted = source.with_name(".source-photo-converted.jpg")
+          converted.unlink(missing_ok=True)
           with Image.open(source) as image:
-              image.convert("RGB").save(converted, format="JPEG", quality=95)
-          converted.replace(source)
+              if image.format != "JPEG":
+                  image.convert("RGB").save(converted, format="JPEG", quality=95)
+          if converted.exists():
+              converted.replace(source)
+              print("Converted the HEIF source photo to JPEG")
+          else:
+              print("Source photo is already JPEG; keeping the original bytes")
           with Image.open(source) as image:
               image.verify()
-          print("Converted source-photo.jpg to a valid JPEG")
           PY
 
       - run: python scripts/prep_photo.py source-photo.jpg
@@ -56,4 +70,5 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: build profile static art [skip ci]"
+          commit_author: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
           file_pattern: "source-photo.jpg source-prepped.png avi-ascii.svg info-card.svg"

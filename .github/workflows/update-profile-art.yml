@@ -12,6 +12,10 @@ name: Update profile art
 permissions:
   contents: write
 
+concurrency:
+  group: profile-art-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   heatmap:
     runs-on: ubuntu-latest
@@ -32,4 +36,5 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: refresh contribution graph [skip ci]"
+          commit_author: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
           file_pattern: "data/contributions.json contrib-heatmap.svg"

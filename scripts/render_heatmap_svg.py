@@ -93,8 +93,6 @@ def main():
     ]
 
     first_date = min(parsed_dates)
-    last_date = max(parsed_dates)
-
     # Move start date back to Sunday
     start_date = first_date
 
@@ -108,11 +106,14 @@ def main():
         f'''<svg xmlns="http://www.w3.org/2000/svg"
         width="{WIDTH}"
         height="{HEIGHT}"
-        viewBox="0 0 {WIDTH} {HEIGHT}">'''
+        viewBox="0 0 {WIDTH} {HEIGHT}"
+        role="img"
+        aria-labelledby="heatmap-title">'''
     )
 
     svg.append(
         f'''
+        <title id="heatmap-title">Public GitHub contributions by day</title>
         <rect
             x="1"
             y="1"
@@ -266,8 +267,9 @@ def main():
     current_streak = data.get("current_streak", 0)
     longest_streak = data.get("longest_streak", 0)
 
+    refreshed = data.get("generated_at", "")[:10] or "unknown"
     footer = (
-        f"{total:,} contributions in the last year"
+        f"{total:,} public contributions · updated {refreshed} UTC"
         f"  ·  current streak {current_streak}"
         f"  ·  longest {longest_streak}"
     )

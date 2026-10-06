@@ -1,10 +1,12 @@
 import json
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
+from requests.adapters import HTTPAdapter
 from bs4 import BeautifulSoup
+from urllib3.util.retry import Retry
 
 
 USERNAME = "idann1idann-create"
@@ -33,7 +35,19 @@ def main():
         "User-Agent": "Mozilla/5.0"
     }
 
-    response = requests.get(url, headers=headers, timeout=30)
+    retry = Retry(
+        total=4,
+        connect=4,
+        read=4,
+        status=4,
+        backoff_factor=1,
+        status_forcelist=(429, 500, 502, 503, 504),
+        allowed_methods=frozenset({"GET"}),
+        respect_retry_after_header=True,
+    )
+    session = requests.Session()
+    session.mount("https://", HTTPAdapter(max_retries=retry))
+    response = session.get(url, headers=headers, timeout=30)
     response.raise_for_status()
 
     soup = BeautifulSoup(response.text, "html.parser")
@@ -112,7 +126,8 @@ def main():
 
     data = {
         "username": USERNAME,
-        "generated_at": datetime.utcnow().isoformat() + "Z",
+        "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "count_scope": "public profile contributions",
         "total_contributions": total,
         "current_streak": current_streak,
         "longest_streak": longest_streak,
