@@ -17,14 +17,14 @@ PALETTE = [
 
 BG = "#0d1117"
 TEXT = "#c9d1d9"
-MUTED = "#8b949e"
+MUTED = "#919ba5"
 BORDER = "#30363d"
 
 CELL = 11
 GAP = 3
 
 LEFT = 42
-TOP = 48
+TOP = 64
 
 WEEKS = 53
 DAYS = 7
@@ -33,7 +33,7 @@ GRID_W = WEEKS * (CELL + GAP)
 GRID_H = DAYS * (CELL + GAP)
 
 WIDTH = 860
-HEIGHT = 210
+HEIGHT = 230
 
 
 def level_for(count: int, max_count: int) -> int:
@@ -122,25 +122,19 @@ def main():
             rx="14"
             fill="{BG}"
             stroke="{BORDER}"
-            stroke-width="2"/>
+            stroke-width="1"/>
         '''
     )
 
     svg.append(
         f'''
         <style>
-            .cell {{
-                opacity: 0;
-                transform: translateY(-8px);
-                animation:
-                    reveal 0.38s ease-out forwards;
+            @media (prefers-reduced-motion: no-preference) {{
+                .cell {{ animation: reveal 0.38s ease-out backwards; }}
             }}
-
             @keyframes reveal {{
-                to {{
-                    opacity: 1;
-                    transform: translateY(0);
-                }}
+                from {{ opacity: 0; transform: translateY(-4px); }}
+                to {{ opacity: 1; transform: translateY(0); }}
             }}
         </style>
         '''
@@ -184,6 +178,21 @@ def main():
         )
 
     from datetime import timedelta
+
+    # Month labels anchor the otherwise unlabeled year grid.
+    last_month = None
+    last_label_x = -100
+    for week in range(WEEKS):
+        date = start_date + timedelta(days=week * 7)
+        if date.month != last_month:
+            x = LEFT + week * (CELL + GAP)
+            if x - last_label_x >= 32:
+                svg.append(
+                    f'<text x="{x}" y="{TOP - 12}" font-family="ui-monospace, monospace" '
+                    f'font-size="10" fill="{MUTED}">{date.strftime("%b")}</text>'
+                )
+                last_label_x = x
+            last_month = date.month
 
     for week in range(WEEKS):
         for day in range(DAYS):

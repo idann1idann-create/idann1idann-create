@@ -74,113 +74,45 @@ def main():
             chars.append(pixel_to_char(value))
         ascii_rows.append("".join(chars).rstrip())
 
-    width = int(COLS * CHAR_W + LEFT_PAD * 2)
-    height = int(rows * CHAR_H + TOP_PAD * 2)
-
-    row_duration = 0.55
-    row_stagger = 0.045
-
-    svg_parts = []
-
-    svg_parts.append(
-        f'''<svg xmlns="http://www.w3.org/2000/svg"
-             width="{width}"
-             height="{height}"
-             viewBox="0 0 {width} {height}">'''
-    )
-
-    svg_parts.append(
-        """
-        <rect width="100%" height="100%" fill="#0d1117"/>
-        """
-    )
-
-    svg_parts.append("<defs>")
-
-    for i in range(rows):
-        clip_width = COLS * CHAR_W
-
-        svg_parts.append(
-            f'''
-            <clipPath id="clip-{i}">
-                <rect
-                    x="{LEFT_PAD}"
-                    y="{TOP_PAD + i * CHAR_H - CHAR_H}"
-                    width="0"
-                    height="{CHAR_H + 3}">
-                    <animate
-                        attributeName="width"
-                        from="0"
-                        to="{clip_width}"
-                        dur="{row_duration}s"
-                        begin="{i * row_stagger}s"
-                        fill="freeze"/>
-                </rect>
-            </clipPath>
-            '''
-        )
-
-    svg_parts.append("</defs>")
-
-    svg_parts.append(
-        f'''
-        <g
-            font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
-            font-size="{FONT_SIZE}"
-            fill="#c9d1d9"
-            xml:space="preserve">
-        '''
-    )
-
-    for i, row in enumerate(ascii_rows):
-        y = TOP_PAD + i * CHAR_H
-
-        svg_parts.append(
-            f'''
-            <text
-                x="{LEFT_PAD}"
-                y="{y}"
-                clip-path="url(#clip-{i})">
-                {escape_xml(row)}
-            </text>
-            '''
-        )
-
-        cursor_x = LEFT_PAD + COLS * CHAR_W
-
-        svg_parts.append(
-            f'''
-            <rect
-                x="{LEFT_PAD}"
-                y="{y - FONT_SIZE + 1}"
-                width="6"
-                height="{FONT_SIZE + 1}"
-                fill="#c9d1d9"
-                opacity="0">
-                <animate
-                    attributeName="x"
-                    from="{LEFT_PAD}"
-                    to="{cursor_x}"
-                    dur="{row_duration}s"
-                    begin="{i * row_stagger}s"
-                    fill="freeze"/>
-                <animate
-                    attributeName="opacity"
-                    values="0;1;1;0"
-                    keyTimes="0;0.02;0.92;1"
-                    dur="{row_duration}s"
-                    begin="{i * row_stagger}s"
-                    fill="freeze"/>
-            </rect>
-            '''
-        )
-
-    svg_parts.append("</g>")
-    svg_parts.append("</svg>")
-
-    OUTPUT.write_text("\n".join(svg_parts), encoding="utf-8")
-
+    OUTPUT.write_text(render_svg(ascii_rows), encoding="utf-8")
     print(f"Created {OUTPUT}")
+
+
+def render_svg(ascii_rows):
+    """Frame the sampled portrait without adding whitespace to the ASCII rows."""
+    width = int(COLS * CHAR_W + LEFT_PAD * 2)
+    height = int(len(ascii_rows) * CHAR_H + TOP_PAD * 2)
+    scale = min(382 / width, 290 / height)
+    left = (430 - width * scale) / 2
+    top = 55 + (290 - height * scale) / 2
+    parts = [f'''<svg xmlns="http://www.w3.org/2000/svg" width="430" height="370"
+        viewBox="0 0 430 370" role="img" aria-labelledby="portrait-title">
+      <title id="portrait-title">ASCII portrait of Idan</title>
+      <rect x="0.5" y="0.5" width="429" height="369" rx="14" fill="#0d1117" stroke="#30363d"/>
+      <text x="24" y="30" font-family="ui-monospace, monospace" font-size="12" fill="#919ba5">idan / portrait</text>
+      <path d="M24 44H406" stroke="#30363d"/>
+      <style>
+        @media (prefers-reduced-motion: no-preference) {{
+          .ascii-row {{ animation: reveal .45s ease-out backwards; }}
+        }}
+        @keyframes reveal {{ from {{ opacity: 0; }} to {{ opacity: 1; }} }}
+      </style>
+      <g transform="translate({left:.3f} {top:.3f}) scale({scale:.5f})"
+         font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+         font-size="{FONT_SIZE}" fill="#c9d1d9" xml:space="preserve" style="white-space:pre">''']
+    for i, row in enumerate(ascii_rows):
+        # Position visible glyphs explicitly: SVG engines differ in how they
+        # collapse leading spaces, even with xml:space and white-space:pre.
+        positions = " ".join(f"{LEFT_PAD + j * CHAR_W:.2f}"
+                             for j, char in enumerate(row) if char != " ")
+        visible = row.replace(" ", "")
+        if visible:
+            parts.append(
+                f'<text class="ascii-row" x="{positions}" y="{TOP_PAD + i * CHAR_H}" '
+                f'style="animation-delay:{i * .025:.3f}s">{escape_xml(visible)}</text>'
+            )
+    parts.extend(["</g>", "</svg>"])
+    return "\n".join(parts)
 
 
 if __name__ == "__main__":
