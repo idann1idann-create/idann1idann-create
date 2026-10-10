@@ -1,161 +1,50 @@
 import os
+from html import escape
 from pathlib import Path
 
 OUTPUT = Path("info-card.svg")
-
-WIDTH = 430
-HEIGHT = 370
-
-BG = "#0d1117"
-BORDER = "#30363d"
-TEXT = "#c9d1d9"
-MUTED = "#8b949e"
-GREEN = "#39d353"
-CYAN = "#58a6ff"
-YELLOW = "#d29922"
-PURPLE = "#bc8cff"
-
-STATIC = os.getenv("STATIC") == "1"
-
-
-def esc(text: str) -> str:
-    return (
-        text.replace("&", "&amp;")
-        .replace("<", "&lt;")
-        .replace(">", "&gt;")
-    )
-
-
+FONT = "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
 rows = [
-    ("Now", "Building Osto / Atlas", GREEN),
-    ("Prev", "Financial Planner", CYAN),
-    ("Stack", "Python · React · AI", PURPLE),
-    ("Highlights", "Finance · Automation · Agents", YELLOW),
+    ("Now", ["Building Osto / Atlas"], "#39d353"),
+    ("Prev", ["Financial Planner"], "#58a6ff"),
+    ("Stack", ["Python · React · AI"], "#bc8cff"),
+    ("Focus", ["Finance · Automation", "Agents"], "#d29922"),
 ]
 
-svg = []
 
-svg.append(
-    f'''<svg xmlns="http://www.w3.org/2000/svg"
-    width="{WIDTH}"
-    height="{HEIGHT}"
-    viewBox="0 0 {WIDTH} {HEIGHT}">'''
-)
+def render_svg(static=False):
+    animation = "" if static else """
+      <style>
+        @media (prefers-reduced-motion: no-preference) {
+          .info-row { animation: reveal .35s ease-out backwards; }
+        }
+        @keyframes reveal { from { opacity: 0; } to { opacity: 1; } }
+      </style>"""
+    svg = [f'''<svg xmlns="http://www.w3.org/2000/svg" width="430" height="430"
+      viewBox="0 0 430 430" role="img" aria-labelledby="info-title info-desc">
+      <title id="info-title">Idan — developer profile</title>
+      <desc id="info-desc">Building Osto / Atlas. Previously Financial Planner. Python, React and AI. Finance, automation and agents.</desc>
+      <rect x="0.5" y="0.5" width="429" height="429" rx="14" fill="#0d1117" stroke="#30363d"/>
+      {animation}
+      <g font-family="{FONT}">
+        <text x="24" y="40" font-size="20" font-weight="700" fill="#c9d1d9">idan@github</text>
+        <text x="24" y="65" font-size="12" fill="#919ba5">builder / finance / automation</text>
+        <path d="M24 82H406" stroke="#30363d"/>''']
+    for i, (key, lines, color) in enumerate(rows):
+        y = 126 + i * 54
+        svg.append(f'<g class="info-row" style="animation-delay:{i * .12:.2f}s">')
+        svg.append(f'<text x="24" y="{y}" font-size="15" font-weight="700" fill="{color}">{escape(key)}</text>')
+        for j, value in enumerate(lines):
+            svg.append(f'<text x="100" y="{y + j * 22}" font-size="15" fill="#c9d1d9">{escape(value)}</text>')
+        svg.append('</g>')
+    svg.extend([
+        '<path d="M24 372H406" stroke="#30363d"/>',
+        '<text x="24" y="398" font-size="12" fill="#919ba5">github.com/idann1idann-create</text>',
+        '</g></svg>',
+    ])
+    return "\n".join(line.rstrip() for line in "\n".join(svg).splitlines())
 
-svg.append(
-    f'''
-    <rect
-        x="1"
-        y="1"
-        width="{WIDTH - 2}"
-        height="{HEIGHT - 2}"
-        rx="14"
-        fill="{BG}"
-        stroke="{BORDER}"
-        stroke-width="2"/>
-    '''
-)
 
-svg.append(
-    f'''
-    <text
-        x="26"
-        y="46"
-        font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
-        font-size="18"
-        font-weight="700"
-        fill="{TEXT}">
-        idan@github
-    </text>
-
-    <text
-        x="26"
-        y="74"
-        font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
-        font-size="13"
-        fill="{MUTED}">
-        ------------------------------
-    </text>
-    '''
-)
-
-start_y = 120
-gap = 46
-
-for i, (key, value, color) in enumerate(rows):
-    y = start_y + i * gap
-
-    if STATIC:
-        animation = ""
-        opacity = "1"
-        transform = ""
-    else:
-        delay = 0.14 * i
-
-        animation = f'''
-        <animate
-            attributeName="opacity"
-            from="0"
-            to="1"
-            dur="0.35s"
-            begin="{delay}s"
-            fill="freeze"/>
-
-        <animateTransform
-            attributeName="transform"
-            type="translate"
-            from="0 8"
-            to="0 0"
-            dur="0.35s"
-            begin="{delay}s"
-            fill="freeze"/>
-        '''
-
-        opacity = "0"
-        transform = ""
-
-    svg.append(
-        f'''
-        <g opacity="{opacity}" {transform}>
-            {animation}
-
-            <text
-                x="26"
-                y="{y}"
-                font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
-                font-size="14"
-                font-weight="700"
-                fill="{color}">
-                {esc(key)}
-            </text>
-
-            <text
-                x="130"
-                y="{y}"
-                font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
-                font-size="14"
-                fill="{TEXT}">
-                {esc(value)}
-            </text>
-        </g>
-        '''
-    )
-
-svg.append(
-    f'''
-    <text
-        x="26"
-        y="338"
-        font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
-        font-size="12"
-        fill="{MUTED}">
-        github.com/idann1idann-create
-    </text>
-    '''
-)
-
-svg.append("</svg>")
-
-OUTPUT.write_text("\n".join(svg), encoding="utf-8")
-
-print(f"Created {OUTPUT}")
+if __name__ == "__main__":
+    OUTPUT.write_text(render_svg(static=os.getenv("STATIC") == "1"), encoding="utf-8")
+    print(f"Created {OUTPUT}")
